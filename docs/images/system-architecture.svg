@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1510" viewBox="0 0 2400 1510">
+<rect width="100%" height="100%" fill="white"/>
+<text x="65" y="82" fill="#172d49" font-family="Malgun Gothic, sans-serif" font-size="47" font-weight="700">PC 부품 수집에서 가격 비교까지</text>
+<text x="67" y="128" fill="#64778b" font-family="Malgun Gothic, sans-serif" font-size="26" font-weight="400">사이트별 수집 → 공통 상품 정제 → DB 저장 → 웹 검색·비교</text>
+<rect x="55" y="190" width="365" height="1150" rx="24" fill="#f3f7fc" stroke="#c4d4e9" stroke-width="2"/>
+<rect x="480" y="190" width="880" height="1150" rx="24" fill="#f3f9f6" stroke="#bed9cf" stroke-width="2"/>
+<rect x="1420" y="190" width="925" height="1150" rx="24" fill="#fcf8f1" stroke="#e2d0b1" stroke-width="2"/>
+<text x="90" y="252" fill="#3668a8" font-family="Malgun Gothic, sans-serif" font-size="32" font-weight="700">수집 대상</text>
+<text x="520" y="252" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="32" font-weight="700">Python 수집 파이프라인</text>
+<text x="1460" y="252" fill="#b57a2c" font-family="Malgun Gothic, sans-serif" font-size="32" font-weight="700">DB · 웹 조회</text>
+<rect x="85.0" y="385" width="300.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="169" y="420" width="132" height="81" rx="10" fill="white" stroke="#3668a8" stroke-width="4"/>
+<polyline points="170,444 300,444" stroke="#3668a8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="187.0" cy="433.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="202.0" cy="433.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="217.0" cy="433.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="235.0" cy="468.5" rx="14.0" ry="12.5" fill="#edf4fd" stroke="#3668a8" stroke-width="3"/>
+<polyline points="205,492 215,482 255,482 265,492" stroke="#3668a8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="191.5" y="555" fill="#3668a8" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">컴퓨존</text>
+<text x="155.0" y="590" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">목록·상세 HTML</text>
+<rect x="85.0" y="945" width="300.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="169" y="980" width="132" height="81" rx="10" fill="white" stroke="#3668a8" stroke-width="4"/>
+<polyline points="170,1004 300,1004" stroke="#3668a8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="187.0" cy="993.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="202.0" cy="993.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="217.0" cy="993.0" rx="3.0" ry="3.0" fill="#3668a8" stroke="#3668a8" stroke-width="1"/>
+<ellipse cx="235.0" cy="1028.5" rx="14.0" ry="12.5" fill="#edf4fd" stroke="#3668a8" stroke-width="3"/>
+<polyline points="205,1052 215,1042 255,1042 265,1052" stroke="#3668a8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="191.5" y="1115" fill="#3668a8" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">다나와</text>
+<text x="151.5" y="1150" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">동적 목록·판매처</text>
+<rect x="525.0" y="385" width="420.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="669" y="420" width="132" height="81" rx="10" fill="white" stroke="#27806a" stroke-width="4"/>
+<polyline points="670,444 800,444" stroke="#27806a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="687.0" cy="433.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="702.0" cy="433.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="717.0" cy="433.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="735.0" cy="468.5" rx="14.0" ry="12.5" fill="#edf4fd" stroke="#27806a" stroke-width="3"/>
+<polyline points="705,492 715,482 755,482 765,492" stroke="#27806a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="628.5" y="555" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">사이트별 크롤러</text>
+<text x="633.5078125" y="590" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">Requests · Selenium</text>
+<rect x="870.0" y="915" width="440.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="1024" y="950" width="132" height="81" rx="10" fill="white" stroke="#27806a" stroke-width="4"/>
+<polyline points="1025,974 1155,974" stroke="#27806a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="1042.0" cy="963.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="1057.0" cy="963.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="1072.0" cy="963.0" rx="3.0" ry="3.0" fill="#27806a" stroke="#27806a" stroke-width="1"/>
+<ellipse cx="1090.0" cy="998.5" rx="14.0" ry="12.5" fill="#edf4fd" stroke="#27806a" stroke-width="3"/>
+<polyline points="1060,1022 1070,1012 1110,1012 1120,1022" stroke="#27806a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="969.5" y="1085" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">정규화 · 상품 구분</text>
+<text x="954.0" y="1120" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">문자열·규격 규칙 (ML 아님)</text>
+<rect x="1625.0" y="385" width="510.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="1826" y="428" width="108" height="66" rx="1" fill="white" stroke="#b57a2c" stroke-width="3"/>
+<ellipse cx="1880.0" cy="493.5" rx="54.0" ry="18.5" fill="white" stroke="#b57a2c" stroke-width="3"/>
+<rect x="1829" y="433" width="102" height="58" rx="0" fill="white" stroke="white" stroke-width="1"/>
+<ellipse cx="1880.0" cy="432.5" rx="54.0" ry="18.5" fill="#edf4fd" stroke="#b57a2c" stroke-width="3"/>
+<polyline points="1826,434 1826,492" stroke="#b57a2c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1934,434 1934,492" stroke="#b57a2c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1800.5078125" y="555" fill="#b57a2c" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">PostgreSQL</text>
+<text x="1772.0" y="590" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">상품·판매처·가격 이력</text>
+<rect x="1625.0" y="815" width="510.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="1820" y="850" width="120" height="26" rx="6" fill="white" stroke="#b57a2c" stroke-width="3"/>
+<ellipse cx="1838.0" cy="863.0" rx="4.0" ry="4.0" fill="#b57a2c" stroke="#b57a2c" stroke-width="1"/>
+<polyline points="1860,863 1920,863" stroke="#b57a2c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1820" y="883" width="120" height="26" rx="6" fill="white" stroke="#b57a2c" stroke-width="3"/>
+<ellipse cx="1838.0" cy="896.0" rx="4.0" ry="4.0" fill="#b57a2c" stroke="#b57a2c" stroke-width="1"/>
+<polyline points="1860,896 1920,896" stroke="#b57a2c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1820" y="916" width="120" height="26" rx="6" fill="white" stroke="#b57a2c" stroke-width="3"/>
+<ellipse cx="1838.0" cy="929.0" rx="4.0" ry="4.0" fill="#b57a2c" stroke="#b57a2c" stroke-width="1"/>
+<polyline points="1860,929 1920,929" stroke="#b57a2c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1826.5" y="985" fill="#b57a2c" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">Flask 웹</text>
+<text x="1747.5" y="1020" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">검색·필터·가격·기본 호환성</text>
+<path d="M 385 490 L 525 490" stroke="#3668a8" stroke-width="4" fill="none"/>
+<polygon points="525,490 512.58207108109,496.46490845758075 512.58207108109,483.53509154241925" fill="#3668a8"/>
+<rect x="406.0" y="437" width="98.0" height="34" rx="5" fill="white" stroke="white" stroke-width="1"/>
+<text x="418.0" y="462" fill="#3668a8" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="700">① 수집</text>
+<polyline points="385,1050 445,1050 445,610 735,610 735,602" stroke="#3668a8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 735 610 L 735 602" stroke="#3668a8" stroke-width="4" fill="none"/>
+<polygon points="735,602 741.4649084575808,614.41792891891 728.5350915424192,614.41792891891" fill="#3668a8"/>
+<polyline points="735,602 735,800 1090,800 1090,910" stroke="#27806a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1090 800 L 1090 910" stroke="#27806a" stroke-width="4" fill="none"/>
+<polygon points="1090,910 1083.5350915424192,897.58207108109 1096.4649084575808,897.58207108109" fill="#27806a"/>
+<rect x="802.0" y="750" width="296.0" height="36" rx="5" fill="white" stroke="white" stroke-width="1"/>
+<text x="814.0" y="777" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="24" font-weight="700">② 파싱 → 규격별 식별키</text>
+<polyline points="1310,1020 1385,1020 1385,490 1625,490" stroke="#27806a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1385 490 L 1625 490" stroke="#27806a" stroke-width="4" fill="none"/>
+<polygon points="1625,490 1612.58207108109,496.46490845758075 1612.58207108109,483.53509154241925" fill="#27806a"/>
+<rect x="1423.0" y="432" width="104.0" height="36" rx="5" fill="white" stroke="white" stroke-width="1"/>
+<text x="1435.0" y="459" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="24" font-weight="700">③ 저장</text>
+<path d="M 1880 602 L 1880 810" stroke="#b57a2c" stroke-width="4" fill="none"/>
+<polygon points="1880,810 1873.5350915424192,797.58207108109 1886.4649084575808,797.58207108109" fill="#b57a2c"/>
+<polygon points="1880,602 1886.4649084575808,614.41792891891 1873.5350915424192,614.41792891891" fill="#b57a2c"/>
+<rect x="1804.0" y="722" width="152.0" height="37" rx="5" fill="white" stroke="white" stroke-width="1"/>
+<text x="1816.0" y="750" fill="#b57a2c" font-family="Malgun Gothic, sans-serif" font-size="25" font-weight="700">④ DB 조회</text>
+<text x="520" y="325" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="25" font-weight="400">CLI: 사이트·카테고리·수집 수 선택</text>
+<rect x="1625.0" y="1125" width="510.0" height="217" rx="18" fill="white" stroke="#d8e3ef" stroke-width="2"/>
+<rect x="1814" y="1160" width="132" height="74" rx="8" fill="white" stroke="#b57a2c" stroke-width="4"/>
+<polyline points="1880,1234 1880,1252 1850,1252 1910,1252" stroke="#b57a2c" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1837,1213 1858,1195 1876,1207 1905,1180 1923,1197" stroke="#b57a2c" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1822.0" y="1295" fill="#b57a2c" font-family="Malgun Gothic, sans-serif" font-size="29" font-weight="700">브라우저</text>
+<text x="1783.0" y="1330" fill="#61758a" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">목록·상세·가격 차트</text>
+<path d="M 1880 1032 L 1880 1118" stroke="#b57a2c" stroke-width="4" fill="none"/>
+<polygon points="1880,1118 1873.5350915424192,1105.58207108109 1886.4649084575808,1105.58207108109" fill="#b57a2c"/>
+<text x="525" y="1247" fill="#27806a" font-family="Malgun Gothic, sans-serif" font-size="27" font-weight="700">CPU · GPU · RAM · SSD · 메인보드</text>
+<text x="525" y="1295" fill="#64778b" font-family="Malgun Gothic, sans-serif" font-size="25" font-weight="400">수집 로그 / 개별 실패·건너뜀 기록</text>
+<text x="67" y="1414" fill="#64778b" font-family="Malgun Gothic, sans-serif" font-size="24" font-weight="400">호환성은 소켓·메모리 규격 기준의 기본 조회이며 전체 조립 호환성 보장이 아닙니다.</text>
+<text x="67" y="1462" fill="#64778b" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="400">실제 쇼핑몰 재수집·DB 접속은 이번 문서 작업에서 실행하지 않았습니다.</text>
+</svg>
