@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.product_name }} | PC Parts{% endblock %}
+
+{% block body %}
+<style>
+    .chart-period-label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .offer-more-wrap {
+        display: flex;
+        justify-content: center;
+        padding-top: 12px;
+    }
+
+    .offer-more-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 4px 2px;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .offer-more-button::after {
+        content: "";
+        width: 7px;
+        height: 7px;
+        margin-top: -4px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.15s ease;
+    }
+
+    .offer-more-button[aria-expanded="true"]::after {
+        margin-top: 4px;
+        transform: rotate(225deg);
+    }
+
+    .offer-more-button:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .compatibility-subsection + .compatibility-subsection {
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+    }
+
+    .compatibility-subheading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+    }
+
+    .compatibility-subheading h2 {
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .compatibility-subheading span {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+    }
+</style>
+
+{% set filters = {
+    "keyword": "",
+    "category_code": product.category_code
+} %}
+
+<div class="app-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="content">
+
+
+
+        <section class="detail-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">PRODUCT DETAIL</span>
+                    <h1>{{ product.product_name }}</h1>
+                </div>
+            </div>
+
+            <div class="detail-main-grid">
+                <div class="detail-product-info">
+                    <div class="detail-product-image">
+                        {% if product.image_url %}
+                            <img
+                                src="{{ product.image_url }}"
+                                alt="{{ product.product_name }}"
+                            >
+                        {% else %}
+                            <span>NO IMAGE</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="detail-product-copy">
+                        <span>{{ product.brand_name }}</span>
+                        <strong>{{ product.model_name }}</strong>
+                    </div>
+                </div>
+
+                <div class="spec-card">
+                    <h2>주요 스펙</h2>
+
+                    {% if product.category_code == "CPU" %}
+                        <p><span>Socket</span><strong>{{ product.spec.socket or "-" }}</strong></p>
+                        <p><span>Cores</span><strong>{{ product.spec.cores or "-" }}</strong></p>
+                        <p><span>Threads</span><strong>{{ product.spec.threads or "-" }}</strong></p>
+                        <p><span>Base</span><strong>{{ product.spec.base_clock_ghz or "-" }} GHz</strong></p>
+                        <p><span>Boost</span><strong>{{ product.spec.boost_clock_ghz or "-" }} GHz</strong></p>
+
+                    {% elif product.category_code == "GPU" %}
+                        <p><span>VRAM</span><strong>{{ product.spec.vram_gb or "-" }}GB</strong></p>
+                        <p><span>Memory</span><strong>{{ product.spec.memory_type or "-" }}</strong></p>
+
+                    {% elif product.category_code == "RAM" %}
+                        <p><span>Capacity</span><strong>{{ product.spec.capacity_gb or "-" }}GB</strong></p>
+                        <p><span>Memory</span><strong>{{ product.spec.memory_type or "-" }}</strong></p>
+                        <p><span>Speed</span><strong>{{ product.spec.speed_mts or "-" }} MT/s</strong></p>
+                        <p><span>Module</span><strong>{{ product.spec.module_count or "-" }}</strong></p>
+
+                    {% elif product.category_code == "SSD" %}
+                        <p><span>Capacity</span><strong>{{ product.spec.capacity_gb or "-" }}GB</strong></p>
+                        <p><span>Interface</span><strong>{{ product.spec.interface or "-" }}</strong></p>
+                        <p><span>PCIe</span><strong>{{ product.spec.pcie_generation or "-" }}</strong></p>
+                        <p><span>Form</span><strong>{{ product.spec.form_factor or "-" }}</strong></p>
+
+                    {% elif product.category_code == "MOTHERBOARD" %}
+                        <p><span>Socket</span><strong>{{ product.spec.socket or "-" }}</strong></p>
+                        <p><span>Chipset</span><strong>{{ product.spec.chipset or "-" }}</strong></p>
+                        <p><span>Memory</span><strong>{{ product.spec.memory_type or "-" }}</strong></p>
+                        <p><span>Form</span><strong>{{ product.spec.form_factor or "-" }}</strong></p>
+                    {% endif %}
+                </div>
+
+                <div class="price-stat-card">
+                    <h2>가격 정보</h2>
+
+                    {% if price_statistics %}
+                        <p>
+                            <span>현재 최저가</span>
+                            <strong>
+                                {{ price_statistics.current_min_price|price }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>최근 최저가</span>
+                            <strong>
+                                {{ price_statistics.recent_min_price|price }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>평균가</span>
+                            <strong>
+                                {{ price_statistics.average_min_price|price }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>최고가</span>
+                            <strong>
+                                {{ price_statistics.highest_min_price|price }}
+                            </strong>
+                        </p>
+                    {% else %}
+                        <p>가격 이력이 없습니다.</p>
+                    {% endif %}
+                </div>
+
+                <div class="offer-preview-card">
+                    <h2>판매처별 현재 가격</h2>
+
+                    {% if offers %}
+                        {% for offer in offers[:5] %}
+                            <a
+                                href="{{ offer.product_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <span>
+                                    {{ offer.retailer_name }}
+                                </span>
+                                <strong>
+                                    {{ offer.price|price }}
+                                </strong>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p>현재 판매처 정보가 없습니다.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="chart-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">PRICE HISTORY</span>
+                    <h1>해당 제품 가격 변동 그래프</h1>
+                </div>
+
+                <span class="chart-period-label">
+                    최근 1주일간 가격 변동
+                </span>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="price-chart"></canvas>
+            </div>
+
+            <script id="price-data" type="application/json">
+                {{ daily_prices|tojson }}
+            </script>
+        </section>
+
+        <section class="detail-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">OFFERS</span>
+                    <h1>판매처 가격 비교</h1>
+                </div>
+
+                <span>{{ offers|length }}개</span>
+            </div>
+
+            {% if offers %}
+                <div class="offer-table-wrap">
+                    <table class="offer-table">
+                        <thead>
+                            <tr>
+                                <th>출처</th>
+                                <th>판매처</th>
+                                <th>가격</th>
+                                <th>수집 시각</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for offer in offers %}
+                                <tr
+                                    {% if loop.index > 5 %}
+                                        class="offer-extra-row"
+                                        hidden
+                                    {% endif %}
+                                >
+                                    <td>{{ offer.seller_name }}</td>
+                                    <td>{{ offer.retailer_name }}</td>
+                                    <td>
+                                        <strong>{{ offer.price|price }}</strong>
+                                    </td>
+                                    <td>
+                                        {{ offer.collected_at|datetime_kr }}
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="{{ offer.product_url }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            상품 보기
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if offers|length > 5 %}
+                    <div class="offer-more-wrap">
+                        <button
+                            id="offer-more-button"
+                            class="offer-more-button"
+                            type="button"
+                            aria-expanded="false"
+                        >
+                            더보기
+                        </button>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="empty-panel">
+                    현재 활성 판매처가 없습니다.
+                </div>
+            {% endif %}
+        </section>
+
+        {% if compatibility %}
+            <section class="detail-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-label">COMPATIBILITY</span>
+                        <h1>{{ compatibility.title }}</h1>
+                    </div>
+
+                    <span>{{ compatibility.criteria }}</span>
+                </div>
+
+                {% if compatibility.motherboards is defined %}
+                    <div class="compatibility-grid">
+                        {% for motherboard in compatibility.motherboards %}
+                            <a
+                                href="{{ url_for(
+                                    'product_detail',
+                                    product_id=motherboard.product_id
+                                ) }}"
+                            >
+                                <strong>
+                                    {{ motherboard.product_name }}
+                                </strong>
+
+                                <span>
+                                    {{ motherboard.socket }}
+                                    · {{ motherboard.chipset }}
+                                    · {{ motherboard.memory_type }}
+                                    · {{ motherboard.form_factor }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if compatibility.cpus is defined %}
+                    <div class="compatibility-subsection">
+                        <div class="compatibility-subheading">
+                            <h2>호환 CPU</h2>
+                            <span>
+                                소켓 {{ product.spec.socket }} 일치
+                            </span>
+                        </div>
+
+                        <div class="compatibility-grid">
+                            {% for cpu in compatibility.cpus %}
+                                <a
+                                    href="{{ url_for(
+                                        'product_detail',
+                                        product_id=cpu.product_id
+                                    ) }}"
+                                >
+                                    <strong>
+                                        {{ cpu.product_name }}
+                                    </strong>
+
+                                    <span>
+                                        {{ cpu.socket }}
+                                        · {{ cpu.cores or "-" }}코어
+                                        · {{ cpu.threads or "-" }}스레드
+                                        {% if cpu.boost_clock_ghz %}
+                                            · 최대 {{ cpu.boost_clock_ghz }} GHz
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="compatibility-subsection">
+                        <div class="compatibility-subheading">
+                            <h2>호환 RAM</h2>
+                            <span>
+                                메모리 타입
+                                {{ product.spec.memory_type }}
+                                일치
+                            </span>
+                        </div>
+
+                        <div class="compatibility-grid">
+                            {% for ram in compatibility.rams %}
+                                <a
+                                    href="{{ url_for(
+                                        'product_detail',
+                                        product_id=ram.product_id
+                                    ) }}"
+                                >
+                                    <strong>
+                                        {{ ram.product_name }}
+                                    </strong>
+
+                                    <span>
+                                        {{ ram.memory_type }}
+                                        · {{ ram.capacity_gb or "-" }}GB
+                                        {% if ram.speed_mts %}
+                                            · {{ ram.speed_mts }} MT/s
+                                        {% endif %}
+                                        {% if ram.module_count %}
+                                            · {{ ram.module_count }}개
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/product_detail.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.env
+.vscode/
+tests/samples/*.html
+
+# 공개 제외: 로컬 생성물·비밀 설정
+logs/
+*.log
+full_crawl_log.txt
+.env.*
+!.env.example
+.venv/
+venv/
+dist/

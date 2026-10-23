@@ -1,0 +1,219 @@
+{% set active_category = None %}
+{% if filters is defined and filters.category_code %}
+    {% set active_category = filters.category_code %}
+{% elif product is defined and product.category_code %}
+    {% set active_category = product.category_code %}
+{% endif %}
+
+<aside class="sidebar">
+    <a class="sidebar-brand" href="{{ url_for('home') }}">
+        PC Parts
+    </a>
+
+    <form
+        class="sidebar-search"
+        method="get"
+        action="{{ url_for('product_list') }}"
+    >
+        {% if active_category %}
+            <input
+                type="hidden"
+                name="category"
+                value="{{ active_category }}"
+            >
+        {% endif %}
+
+        <input
+            type="search"
+            name="q"
+            value="{{ filters.keyword if filters is defined else '' }}"
+            placeholder="제품 검색"
+        >
+    </form>
+
+    <div class="sidebar-section">
+        <h2>목록</h2>
+
+        <a
+            class="sidebar-category {% if not active_category %}active{% endif %}"
+            href="{{ url_for('product_list') }}"
+        >
+            전체
+        </a>
+
+        {% for category in categories %}
+            <a
+                class="sidebar-category {% if active_category == category.category_code %}active{% endif %}"
+                href="{{ url_for(
+                    'product_list',
+                    category=category.category_code
+                ) }}"
+            >
+                {{ category.category_name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if active_category %}
+        <div class="sidebar-section sidebar-filter-list">
+            <h2>세부 분류</h2>
+
+            {% if filter_options.model_groups %}
+                <div class="sidebar-filter-group model-tree">
+                    <strong>제품 계열 / 모델</strong>
+
+                    {% for group in filter_options.model_groups %}
+                        <div class="model-family">
+                            <a
+                                class="model-family-link"
+                                href="{{ url_for(
+                                    'product_list',
+                                    category=active_category,
+                                    family=group.family
+                                ) }}"
+                            >
+                                <span>{{ group.vendor_name }}</span>
+                                <b>{{ group.family }}</b>
+                            </a>
+
+                            <div class="model-list">
+                                {% for model in group.models %}
+                                    <a
+                                        href="{{ url_for(
+                                            'product_list',
+                                            category=active_category,
+                                            family=group.family,
+                                            model=model
+                                        ) }}"
+                                    >
+                                        {{ model }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.sockets %}
+                <div class="sidebar-filter-group">
+                    <strong>소켓</strong>
+                    {% for value in filter_options.sockets %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            socket=value
+                        ) }}">
+                            {{ value }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.memory_types %}
+                <div class="sidebar-filter-group">
+                    <strong>메모리 타입</strong>
+                    {% for value in filter_options.memory_types %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            memory_type=value
+                        ) }}">
+                            {{ value }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if active_category == "SSD" and filter_options.capacity_groups %}
+                <div class="sidebar-filter-group">
+                    <strong>용량</strong>
+
+                    {% for item in filter_options.capacity_groups %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            capacity_group=item.value
+                        ) }}">
+                            {{ item.label }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% elif filter_options.capacities %}
+                <div class="sidebar-filter-group">
+                    <strong>용량</strong>
+
+                    {% for value in filter_options.capacities %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            capacity_gb=value
+                        ) }}">
+                            {{ value }}GB
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.speeds %}
+                <div class="sidebar-filter-group">
+                    <strong>속도</strong>
+                    {% for value in filter_options.speeds %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            speed_mts=value
+                        ) }}">
+                            {{ value }} MT/s
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.vram_values %}
+                <div class="sidebar-filter-group">
+                    <strong>VRAM</strong>
+                    {% for value in filter_options.vram_values %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            vram_gb=value
+                        ) }}">
+                            {{ value }}GB
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.chipsets %}
+                <div class="sidebar-filter-group">
+                    <strong>칩셋</strong>
+                    {% for value in filter_options.chipsets %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            chipset=value
+                        ) }}">
+                            {{ value }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if filter_options.interfaces %}
+                <div class="sidebar-filter-group">
+                    <strong>인터페이스</strong>
+                    {% for value in filter_options.interfaces %}
+                        <a href="{{ url_for(
+                            'product_list',
+                            category=active_category,
+                            interface=value
+                        ) }}">
+                            {{ value }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</aside>

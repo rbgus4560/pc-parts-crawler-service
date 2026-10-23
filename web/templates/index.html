@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% set page_title = "상품 검색" %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">PC PARTS CRAWLER</p>
+    <h1>PC 부품 가격 비교</h1>
+    <p class="hero-description">
+        컴퓨존과 다나와에서 수집한 CPU, GPU, RAM, SSD, 메인보드를
+        한 화면에서 조회합니다.
+    </p>
+</section>
+
+<section class="search-panel">
+    <form class="search-form" method="get" action="{{ url_for('index') }}">
+        <div class="search-row">
+            <input
+                class="search-input"
+                type="search"
+                name="q"
+                value="{{ keyword }}"
+                placeholder="상품명, 모델명, 브랜드 검색"
+            >
+
+            <button class="button" type="submit">
+                검색
+            </button>
+        </div>
+
+        <div class="category-tabs">
+            <a
+                class="category-tab {% if selected_category == 'ALL' %}active{% endif %}"
+                href="{{ url_for('index', q=keyword) }}"
+            >
+                전체
+            </a>
+
+            {% for category in categories %}
+                <a
+                    class="category-tab {% if selected_category == category.category_code %}active{% endif %}"
+                    href="{{ url_for(
+                        'index',
+                        q=keyword,
+                        category=category.category_code
+                    ) }}"
+                >
+                    {{ category.category_name }}
+                </a>
+            {% endfor %}
+        </div>
+    </form>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">PRODUCTS</p>
+            <h2>상품 목록</h2>
+        </div>
+
+        <span class="result-count">
+            {{ products|length }}개
+        </span>
+    </div>
+
+    {% if products %}
+        <div class="product-grid">
+            {% for product in products %}
+                <a
+                    class="product-card"
+                    href="{{ url_for(
+                        'product_detail',
+                        product_id=product.product_id
+                    ) }}"
+                >
+                    <div class="product-image-wrap">
+                        {% if product.image_url %}
+                            <img
+                                class="product-image"
+                                src="{{ product.image_url }}"
+                                alt="{{ product.product_name }}"
+                                loading="lazy"
+                            >
+                        {% else %}
+                            <div class="image-placeholder">
+                                NO IMAGE
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="product-card-body">
+                        <div class="product-meta">
+                            <span class="badge">
+                                {{ product.category_code }}
+                            </span>
+
+                            <span>
+                                {{ product.brand_name }}
+                            </span>
+                        </div>
+
+                        <h3 class="product-name">
+                            {{ product.product_name }}
+                        </h3>
+
+                        <div class="product-card-footer">
+                            <div>
+                                <span class="label">현재 최저가</span>
+                                <strong class="price">
+                                    {{ product.current_min_price|price }}
+                                </strong>
+                            </div>
+
+                            <div class="offer-summary">
+                                <span>
+                                    판매처 {{ product.active_offer_count }}
+                                </span>
+                                <span>
+                                    출처 {{ product.seller_count }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            조건에 맞는 상품이 없습니다.
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

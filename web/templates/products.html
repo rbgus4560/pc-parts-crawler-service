@@ -1,0 +1,789 @@
+{% extends "base.html" %}
+
+{% block title %}상품 목록 | PC Parts{% endblock %}
+
+{% block body %}
+<div class="app-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="content">
+        <section class="catalog-filter-panel">
+            <div class="catalog-filter-title">
+                <h1>
+                    {% if filters.category_code %}
+                        {{ filters.category_code }} 제품 세부 검색
+                    {% else %}
+                        제품 분류 제품 세부 검색
+                    {% endif %}
+                </h1>
+            </div>
+
+            <form
+                id="productFilterForm"
+                class="catalog-filter-form catalog-filter-form-inline"
+                method="get"
+                action="{{ url_for('product_list') }}"
+            >
+                {% if filters.category_code %}
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ filters.category_code }}"
+                    >
+                {% endif %}
+
+                {% if filters.keyword %}
+                    <input
+                        type="hidden"
+                        name="q"
+                        value="{{ filters.keyword }}"
+                    >
+                {% endif %}
+
+                {# ==================================================
+                   전체 목록
+                   제품 분류 선택 → 화면 이동 X
+                   → 해당 카테고리의 브랜드/스펙 필터만 표시
+                   → 적용 버튼을 눌렀을 때 한 번에 조회
+                   ================================================== #}
+                {% if not filters.category_code %}
+                    <label class="filter-field filter-field-category">
+                        <span>제품 분류</span>
+                        <select
+                            id="categoryFilter"
+                            name="category"
+                        >
+                            <option value="">전체</option>
+
+                            {% for category in categories %}
+                                <option value="{{ category.category_code }}">
+                                    {{ category.category_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    {% for category in categories %}
+                        {% set options = filter_options_by_category.get(
+                            category.category_code,
+                            {}
+                        ) %}
+
+                        <label
+                            class="filter-field filter-field-brand"
+                            data-category-field="{{ category.category_code }}"
+                            hidden
+                        >
+                            <span>제조사 / 브랜드</span>
+                            <select
+                                name="brand"
+                                data-category-input
+                                disabled
+                            >
+                                <option value="">전체</option>
+
+                                {% for brand in options.brands %}
+                                    <option value="{{ brand }}">
+                                        {{ brand }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        {% if options.model_groups %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>제품 계열</span>
+                                <select
+                                    name="family"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for group in options.model_groups %}
+                                        <option value="{{ group.family }}">
+                                            {{ group.label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>세부 모델</span>
+                                <select
+                                    name="model"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for group in options.model_groups %}
+                                        <optgroup label="{{ group.label }}">
+                                            {% for model in group.models %}
+                                                <option value="{{ model }}">
+                                                    {{ model }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.sockets %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>소켓</span>
+                                <select
+                                    name="socket"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.sockets %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.memory_types %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>메모리 타입</span>
+                                <select
+                                    name="memory_type"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.memory_types %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if category.category_code == "SSD" and options.capacity_groups %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>용량</span>
+                                <select
+                                    name="capacity_group"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for item in options.capacity_groups %}
+                                        <option value="{{ item.value }}">
+                                            {{ item.label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% elif options.capacities %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>용량</span>
+                                <select
+                                    name="capacity_gb"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.capacities %}
+                                        <option value="{{ value }}">
+                                            {{ value }}GB
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.speeds %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>속도</span>
+                                <select
+                                    name="speed_mts"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.speeds %}
+                                        <option value="{{ value }}">
+                                            {{ value }} MT/s
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.vram_values %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>VRAM</span>
+                                <select
+                                    name="vram_gb"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.vram_values %}
+                                        <option value="{{ value }}">
+                                            {{ value }}GB
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.chipsets %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>칩셋</span>
+                                <select
+                                    name="chipset"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.chipsets %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.interfaces %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>인터페이스</span>
+                                <select
+                                    name="interface"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.interfaces %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.pcie_generations %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>PCIe 세대</span>
+                                <select
+                                    name="pcie_generation"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.pcie_generations %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+
+                        {% if options.form_factors %}
+                            <label
+                                class="filter-field"
+                                data-category-field="{{ category.category_code }}"
+                                hidden
+                            >
+                                <span>폼팩터</span>
+                                <select
+                                    name="form_factor"
+                                    data-category-input
+                                    disabled
+                                >
+                                    <option value="">전체</option>
+
+                                    {% for value in options.form_factors %}
+                                        <option value="{{ value }}">
+                                            {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+
+                {# ==================================================
+                   특정 카테고리 목록
+                   기존처럼 해당 카테고리 필터를 바로 표시
+                   ================================================== #}
+                {% else %}
+                    <label class="filter-field filter-field-brand">
+                        <span>제조사 / 브랜드</span>
+                        <select name="brand">
+                            <option value="">전체</option>
+
+                            {% for brand in filter_options.brands %}
+                                <option
+                                    value="{{ brand }}"
+                                    {% if filters.brand_name == brand %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ brand }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    {% if filter_options.model_groups %}
+                        <label class="filter-field">
+                            <span>제품 계열</span>
+                            <select name="family">
+                                <option value="">전체</option>
+
+                                {% for group in filter_options.model_groups %}
+                                    <option
+                                        value="{{ group.family }}"
+                                        {% if filters.model_family == group.family %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ group.label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label class="filter-field">
+                            <span>세부 모델</span>
+                            <select name="model">
+                                <option value="">전체</option>
+
+                                {% for group in filter_options.model_groups %}
+                                    <optgroup label="{{ group.label }}">
+                                        {% for model in group.models %}
+                                            <option
+                                                value="{{ model }}"
+                                                {% if filters.model_name == model %}
+                                                    selected
+                                                {% endif %}
+                                            >
+                                                {{ model }}
+                                            </option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.sockets %}
+                        <label class="filter-field">
+                            <span>소켓</span>
+                            <select name="socket">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.sockets %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.socket == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.memory_types %}
+                        <label class="filter-field">
+                            <span>메모리 타입</span>
+                            <select name="memory_type">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.memory_types %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.memory_type == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filters.category_code == "SSD" and filter_options.capacity_groups %}
+                        <label class="filter-field">
+                            <span>용량</span>
+                            <select name="capacity_group">
+                                <option value="">전체</option>
+
+                                {% for item in filter_options.capacity_groups %}
+                                    <option
+                                        value="{{ item.value }}"
+                                        {% if filters.capacity_group == item.value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ item.label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% elif filter_options.capacities %}
+                        <label class="filter-field">
+                            <span>용량</span>
+                            <select name="capacity_gb">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.capacities %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.capacity_gb == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}GB
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.speeds %}
+                        <label class="filter-field">
+                            <span>속도</span>
+                            <select name="speed_mts">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.speeds %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.speed_mts == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }} MT/s
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.vram_values %}
+                        <label class="filter-field">
+                            <span>VRAM</span>
+                            <select name="vram_gb">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.vram_values %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.vram_gb == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}GB
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.chipsets %}
+                        <label class="filter-field">
+                            <span>칩셋</span>
+                            <select name="chipset">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.chipsets %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.chipset == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.interfaces %}
+                        <label class="filter-field">
+                            <span>인터페이스</span>
+                            <select name="interface">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.interfaces %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.interface == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.pcie_generations %}
+                        <label class="filter-field">
+                            <span>PCIe 세대</span>
+                            <select name="pcie_generation">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.pcie_generations %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.pcie_generation == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+
+                    {% if filter_options.form_factors %}
+                        <label class="filter-field">
+                            <span>폼팩터</span>
+                            <select name="form_factor">
+                                <option value="">전체</option>
+
+                                {% for value in filter_options.form_factors %}
+                                    <option
+                                        value="{{ value }}"
+                                        {% if filters.form_factor == value %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    {% endif %}
+                {% endif %}
+
+                <div class="filter-actions">
+                    <button type="submit">
+                        적용
+                    </button>
+
+                    <a href="{{ url_for('product_list') }}">
+                        초기화
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <section class="product-area">
+            <div class="product-area-heading">
+                <h1>
+                    {{ filters.category_code or "ALL" }} 제품 목록
+                </h1>
+
+                <label class="per-page-control">
+                    <span>표시 개수</span>
+                    <select
+                        onchange="window.location.href=this.value"
+                    >
+                        {% for size in (20, 40, 60) %}
+                            <option
+                                value="{{ pagination.per_page_urls[size] }}"
+                                {% if pagination.per_page == size %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ size }}개
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            {% if products %}
+                <div class="product-grid">
+                    {% for product in products %}
+                        <a
+                            class="product-card"
+                            href="{{ url_for(
+                                'product_detail',
+                                product_id=product.product_id
+                            ) }}"
+                        >
+                            <div class="product-image-box">
+                                {% if product.image_url %}
+                                    <img
+                                        src="{{ product.image_url }}"
+                                        alt="{{ product.product_name }}"
+                                        loading="lazy"
+                                    >
+                                {% else %}
+                                    <span>NO IMAGE</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="product-card-body">
+                                <div class="product-card-meta">
+                                    <strong>
+                                        {{ product.category_code }}
+                                    </strong>
+                                    <span>
+                                        {{ product.brand_name }}
+                                    </span>
+                                </div>
+
+                                <h2>
+                                    {{ product.product_name }}
+                                </h2>
+
+                                <div class="product-price-row">
+                                    <div>
+                                        <span>현재 최저가</span>
+                                        <strong>
+                                            {{ product.current_min_price|price }}
+                                        </strong>
+                                    </div>
+
+                                    <small>
+                                        판매처 {{ product.active_offer_count }}
+                                    </small>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-panel">
+                    조건에 맞는 제품이 없습니다.
+                </div>
+            {% endif %}
+
+            {% if products and pagination.total_pages > 1 %}
+                <nav
+                    class="pagination"
+                    aria-label="제품 목록 페이지"
+                >
+                    <div class="pagination-controls">
+                        {% if pagination.previous_group_url %}
+                            <a
+                                class="pagination-link pagination-group-link"
+                                href="{{ pagination.previous_group_url }}"
+                                title="이전 5페이지"
+                            >
+                                &laquo;
+                            </a>
+                        {% else %}
+                            <span
+                                class="pagination-link pagination-group-link disabled"
+                            >
+                                &laquo;
+                            </span>
+                        {% endif %}
+
+                        {% for item in pagination.page_links %}
+                            <a
+                                class="pagination-link {% if item.number == pagination.page %}active{% endif %}"
+                                href="{{ item.url }}"
+                            >
+                                {{ item.number }}
+                            </a>
+                        {% endfor %}
+
+                        {% if pagination.next_group_url %}
+                            <a
+                                class="pagination-link pagination-group-link"
+                                href="{{ pagination.next_group_url }}"
+                                title="다음 5페이지"
+                            >
+                                &raquo;
+                            </a>
+                        {% else %}
+                            <span
+                                class="pagination-link pagination-group-link disabled"
+                            >
+                                &raquo;
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="pagination-summary">
+                        {{ pagination.page }} / {{ pagination.total_pages }} 페이지
+                    </div>
+                </nav>
+            {% endif %}
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}

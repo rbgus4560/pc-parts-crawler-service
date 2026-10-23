@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}페이지를 찾을 수 없습니다{% endblock %}
+
+{% block body %}
+<main class="home-page">
+    <section class="home-panel">
+        <p class="home-kicker">404</p>
+        <h1>페이지를 찾을 수 없습니다.</h1>
+        <a class="simple-button" href="{{ url_for('home') }}">
+            홈으로 돌아가기
+        </a>
+    </section>
+</main>
+{% endblock %}

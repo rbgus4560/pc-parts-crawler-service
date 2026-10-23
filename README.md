@@ -2,7 +2,7 @@
 
 **컴퓨존·다나와의 PC 부품 정보를 수집하고, 규격별로 정제·저장한 뒤 웹에서 검색·가격 비교·기본 호환성을 조회하는 개인 프로젝트입니다.**
 
-> 문서 기준: 2026-10-22 제공된 로컬 코드. GitHub에는 README·구성도·분석 문서를 먼저 반영하며, 실행 소스와 DB 스키마의 동기화는 별도입니다. 아래 실행 안내는 로컬 프로젝트 기준입니다.
+> 2026-10-23 실행 소스와 공개용 설정 예시를 추가했습니다. DB 전체 초기 생성 DDL은 제공 자료에 없어 기존 스키마를 별도로 준비해야 합니다.
 
 ## 대표 화면
 
@@ -58,7 +58,7 @@
 | 웹 | Flask / Jinja | Flask 3.1.3 | 상품 목록·상세 서버 렌더링 |
 | 화면 | HTML·CSS·JavaScript / SVG | 별도 버전 없음 | 필터·가격 차트·웹 UI |
 
-버전은 제공 PC의 기존 `web_crol` 패키지 메타데이터 스냅샷입니다. 잠금 파일이나 모든 PC에서의 재현 보장이 아닙니다. 현재 `requirements.txt`는 실제 줄바꿈 대신 문자 `\n`이 들어간 한 줄이라 그대로 설치하기 전에 확인이 필요합니다. 이번 작업은 실행 코드를 수정하지 않았습니다.
+버전은 기존 `web_crol` 환경 메타데이터를 기준으로 공개용 requirements에 고정했습니다. 간접 의존성 전체 잠금이나 새 환경 설치 재현까지 검증한 것은 아닙니다. 기존 requirements의 줄바꿈 오류는 2026-10-23 수정했습니다.
 
 ## 전체 시스템 구성도
 
@@ -92,14 +92,14 @@
 
 ## 실행 방법
 
-아래 명령은 소스·기존 DB가 준비된 **로컬 프로젝트 폴더**에서 실행합니다. GitHub 문서만 내려받아 실행할 수 있는 배포본은 아닙니다.
+저장소의 소스와 의존성 파일을 사용할 수 있습니다. DB 스키마·계정은 별도로 준비해야 하며, 빈 DB에 바로 실행되는 완성 배포본은 아닙니다.
 
 1. Python 환경과 Chrome·PostgreSQL을 준비합니다. DB의 전체 DDL은 제공 폴더에서 확인하지 못했습니다.
-2. `.env`에 `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`를 설정합니다. 실제 값은 문서·Git에 넣지 않습니다.
-3. 현재 requirements 파일의 줄바꿈 문제를 확인합니다. 새 환경이라면 필요한 패키지 목록은 다음과 같습니다. 버전 고정·설치는 이번에 수행하지 않았습니다.
+2. `.env.example`을 `.env`로 복사하고 `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`를 설정합니다. 실제 값은 문서·Git에 넣지 않습니다.
+3. 준비한 Python 환경에 의존성을 설치합니다. 이번 작업에서 새 환경에 패키지를 설치하지는 않았습니다.
 
 ```powershell
-python -m pip install requests beautifulsoup4 lxml selenium "psycopg[binary]" python-dotenv Flask
+python -m pip install -r requirements.txt
 
 # 소량 수집 예시 — 실제 사이트 접속 및 DB 쓰기가 발생합니다.
 python -m src.main --seller COMPUZONE --category CPU --limit 1
@@ -108,7 +108,7 @@ python -m src.main --seller COMPUZONE --category CPU --limit 1
 python -m web.app
 ```
 
-브라우저에서 `http://127.0.0.1:5000`을 엽니다. `run_daily_crawl.ps1`은 로컬 절대 경로를 포함하므로 다른 PC에서 그대로 실행하지 않습니다. 수집 실행 전 대상 사이트의 이용 조건과 요청 간격을 확인합니다.
+브라우저에서 `http://127.0.0.1:5000`을 엽니다. `run_daily_crawl.ps1`은 스크립트 폴더를 프로젝트 위치로 사용합니다. Conda 환경을 활성화하거나 `-PythonPath "<사용할 python.exe 경로>"`로 지정합니다. Windows 작업 스케줄러가 자동 등록되는 것은 아닙니다. `sql/`의 정리 SQL은 데이터를 삭제하는 수동 유지보수용이며 초기 생성·자동 실행 스크립트가 아닙니다. 수집 실행 전 대상 사이트의 이용 조건과 요청 간격을 확인합니다.
 
 ## 검증 결과
 
